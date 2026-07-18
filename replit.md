@@ -1,45 +1,66 @@
-# [Project name]
+# Artopia
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+Event management platform for an art community — two independent apps powered by Supabase.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/website run dev` — public website (preview at `/`)
+- `pnpm --filter @workspace/admin run dev` — admin panel (preview at `/admin/`)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+
+## Environment Variables (required)
+
+Both apps need these set as Secrets:
+- `VITE_SUPABASE_URL` — your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY` — your Supabase anon/public API key
+
+## Supabase Setup (run once)
+
+1. Create project at supabase.com
+2. Enable Discord OAuth under Authentication → Providers → Discord
+3. Run SQL files **in order** in the Supabase SQL Editor:
+   - `supabase/schema.sql` — tables, enums, triggers, indexes
+   - `supabase/policies.sql` — Row Level Security policies
+   - `supabase/storage.sql` — artwork-images storage bucket
+
+4. Create your first admin (after signing in once with Discord):
+   ```sql
+   INSERT INTO admins (user_id) VALUES ('your-user-uuid');
+   ```
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React 18, Vite, Tailwind CSS v4, Framer Motion
+- Auth/DB/Storage: Supabase (Discord OAuth)
+- Routing: Wouter
+- Forms: React Hook Form + Zod
+- Icons: Lucide React
+- Charts (admin): Recharts
 
 ## Where things live
 
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
+- `artifacts/website/` — public-facing React app (gallery, events, voting, hall of fame)
+- `artifacts/admin/` — admin React app (event management, moderation, analytics)
+- `supabase/schema.sql` — all tables, triggers, indexes
+- `supabase/policies.sql` — all RLS policies
+- `supabase/storage.sql` — storage bucket + policies
 
-## Architecture decisions
+## Architecture Decisions
 
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
+- Both apps talk directly to Supabase — no custom Express backend needed
+- Supabase RLS enforces all security rules at the database level
+- Discord OAuth is handled entirely by Supabase Auth
+- Event `status` enum drives all public website behavior (no polling needed — Supabase realtime)
+- Artwork images stored in `artwork-images` Supabase Storage bucket (public read, authenticated write)
 
-## Product
+## User Preferences
 
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
+_Populate as you build._
 
 ## Gotchas
 
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY before the apps will connect
+- Run supabase/schema.sql → policies.sql → storage.sql in that exact order
+- First admin must be manually inserted into the admins table
+- Both VITE_ env vars are exposed to the browser — never put the service_role key here

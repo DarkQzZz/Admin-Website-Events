@@ -1,0 +1,652 @@
+You are an expert senior full-stack engineer, UI/UX designer, database architect, and software architect.
+
+Build a COMPLETE production-ready event management platform for an art community called **Artopia**.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️ IMPORTANT OUTPUT REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+When generating the project:
+
+1. Generate the FULL project.
+2. Organize everything into proper folders.
+3. NEVER combine the admin and public websites.
+4. At the VERY END of the response, generate a **SEPARATE SQL CODE BLOCK** for Supabase.
+5. The SQL must NOT be mixed with React, TypeScript, or other code.
+6. The SQL should be inside its own ```sql``` code block.
+7. Include ALL database tables, relationships, indexes, triggers (if needed), Row Level Security policies, storage bucket setup, and helper functions.
+8. After the SQL code block, include a short explanation on how to run it inside the Supabase SQL Editor.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📁 PROJECT STRUCTURE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The repository MUST look similar to this:
+
+/
+├── apps/
+│
+│   ├── website/
+│   │   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── hooks/
+│   │   ├── router/
+│   │   ├── assets/
+│   │   ├── styles/
+│   │   ├── lib/
+│   │   ├── package.json
+│   │   ├── vite.config.ts
+│   │   └── tsconfig.json
+│
+│   └── admin/
+│       ├── src/
+│       ├── components/
+│       ├── pages/
+│       ├── hooks/
+│       ├── router/
+│       ├── assets/
+│       ├── styles/
+│       ├── lib/
+│       ├── package.json
+│       ├── vite.config.ts
+│       └── tsconfig.json
+│
+├── packages/
+│   ├── ui/
+│   ├── utils/
+│   └── types/
+│
+├── supabase/
+│   ├── schema.sql
+│   ├── policies.sql
+│   ├── storage.sql
+│
+├── README.md
+└── package.json
+
+The Admin Website and Public Website MUST be completely independent applications.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 DESIGN STYLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+The platform should NOT look like it was AI generated.
+
+It should feel handcrafted by a real creative agency.
+
+The feeling should be:
+
+• Artistic
+• Premium
+• Modern
+• Cute
+• Elegant
+• Creative
+• Colorful
+• Soft
+• Gallery-like
+
+Inspired by:
+
+• Behance
+• Dribbble
+• Adobe Portfolio
+• Museum websites
+• Art galleries
+• Creative studios
+
+Avoid:
+
+• Generic SaaS
+• Bootstrap templates
+• Corporate layouts
+• Plain dashboards
+• Huge empty sections
+• Boring UI
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🎨 COLOR PALETTE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Background
+#FFFFFF
+
+Soft Pink
+#FFE8F3
+
+Hot Pink
+#FF4FA3
+
+Bubblegum Pink
+#FF87C5
+
+Mint Green
+#A8F0C6
+
+Soft Green
+#DDF8EA
+
+Sky Blue
+#74C8FF
+
+Baby Blue
+#DDF2FF
+
+Dark Text
+#2B2B2B
+
+Gray
+#666666
+
+Borders
+#EFEFEF
+
+Use subtle gradients such as:
+
+Pink → Hot Pink
+
+Pink → Blue
+
+Mint → Blue
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✨ VISUAL STYLE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Include:
+
+• Floating artwork
+• Organic blobs
+• Paper cutouts
+• Paint strokes
+• Brush textures
+• Sparkles
+• Stars
+• Flowers
+• Soft shadows
+• Layered cards
+• Rounded corners
+• Premium hover animations
+• Smooth page transitions
+• Beautiful loading animations
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛠 TECH STACK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+React
+
+TypeScript
+
+Tailwind CSS
+
+Vite
+
+Framer Motion
+
+Supabase
+
+Discord OAuth
+
+React Router
+
+React Hook Form
+
+Zod
+
+Lucide Icons
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🌐 PUBLIC WEBSITE
+apps/website
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pages:
+
+Home
+
+Current Event
+
+Gallery
+
+View Artwork
+
+Hall of Fame
+
+Login
+
+Profile
+
+404
+
+HOME
+
+• Hero section
+• Featured artwork
+• Countdown
+• Current event
+• Community statistics
+• Hall of Fame preview
+• Footer
+
+CURRENT EVENT
+
+Display:
+
+Banner
+
+Description
+
+Rules
+
+Prizes
+
+Status
+
+Countdown
+
+If status is:
+
+submission_open
+
+Show Submit button.
+
+submission_closed
+
+Disable submission.
+
+voting_open
+
+Show Vote button.
+
+voting_closed
+
+Disable voting.
+
+results_published
+
+Display winners.
+
+SUBMISSION
+
+Discord Login required.
+
+Upload artwork.
+
+Fields:
+
+Title
+
+Description
+
+Category
+
+Optional Social Link
+
+Artwork Image
+
+Preview
+
+5MB limit.
+
+Allow edit/delete before submissions close.
+
+GALLERY
+
+Pinterest style.
+
+Infinite scroll.
+
+Filters.
+
+Search.
+
+Artwork cards.
+
+View Artwork button.
+
+VIEW ARTWORK
+
+Large artwork.
+
+Artist.
+
+Description.
+
+Submission date.
+
+Category.
+
+Share button.
+
+VOTING
+
+Only enabled if admin turns it on.
+
+Users vote:
+
+Top 1
+
+Top 2
+
+Top 3
+
+Points:
+
+3
+
+2
+
+1
+
+Prevent:
+
+Voting twice.
+
+Voting yourself.
+
+RESULTS
+
+Display:
+
+🥇
+
+🥈
+
+🥉
+
+Winner showcase.
+
+Confetti.
+
+HALL OF FAME
+
+Previous winners.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🛠 ADMIN WEBSITE
+apps/admin
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Pages:
+
+Dashboard
+
+Events
+
+Submissions
+
+Voting
+
+Results
+
+Users
+
+Analytics
+
+Settings
+
+Dashboard
+
+Overview.
+
+Quick actions.
+
+Analytics.
+
+EVENTS
+
+Create event.
+
+Edit event.
+
+Delete event.
+
+Banner upload.
+
+Rules editor.
+
+Prize editor.
+
+Description.
+
+Categories.
+
+Thumbnail.
+
+EVENT CONTROLS
+
+These buttons control the website.
+
+Open Submissions
+
+Close Submissions
+
+Open Voting
+
+Close Voting
+
+Publish Results
+
+Archive Event
+
+Changing these should instantly update the public website through Supabase.
+
+SUBMISSIONS
+
+Approve.
+
+Reject.
+
+Delete.
+
+Download.
+
+Search.
+
+Filters.
+
+VOTING
+
+View votes.
+
+Leaderboard.
+
+Remove votes.
+
+Detect suspicious activity.
+
+RESULTS
+
+Generate winners.
+
+Publish winners.
+
+Export CSV.
+
+USERS
+
+Search.
+
+Ban.
+
+View submissions.
+
+ANALYTICS
+
+Charts.
+
+Storage usage.
+
+Daily submissions.
+
+Votes.
+
+Users.
+
+SETTINGS
+
+Branding.
+
+Upload size.
+
+Social links.
+
+Discord.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🗄 DATABASE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generate SQL for:
+
+profiles
+
+admins
+
+events
+
+submissions
+
+votes
+
+categories
+
+settings
+
+event_results
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🖼 STORAGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Create bucket:
+
+artwork-images
+
+Public read.
+
+Authenticated uploads.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔐 ROW LEVEL SECURITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Generate RLS policies so that:
+
+Users can:
+
+✔ Login with Discord
+
+✔ Create their own profile
+
+✔ Submit artwork
+
+✔ Edit ONLY their own submission
+
+✔ Delete ONLY their own submission before submissions close
+
+✔ Vote only once
+
+✔ Cannot vote for themselves
+
+✔ Read approved submissions
+
+Admins can:
+
+✔ Full CRUD access
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📦 SHARED PACKAGES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+packages/ui
+
+Buttons
+
+Cards
+
+Inputs
+
+Dialogs
+
+Artwork Cards
+
+Navbar
+
+Footer
+
+Badges
+
+Avatar
+
+Toast
+
+Loading
+
+Countdown
+
+Typography
+
+packages/utils
+
+Shared helpers.
+
+packages/types
+
+Shared interfaces.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⭐ CODE QUALITY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Write production-quality code.
+
+Strict TypeScript.
+
+Reusable components.
+
+Responsive.
+
+Accessible.
+
+Optimized.
+
+No TODO comments.
+
+No placeholder pages.
+
+No unfinished components.
+
+No duplicated code.
+
+Everything should be modular.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📄 SQL REQUIREMENTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+At the VERY END of the response, generate ONE completely separate SQL code block.
+
+The SQL must include:
+
+• CREATE TABLE statements
+• Primary keys
+• Foreign keys
+• Constraints
+• Indexes
+• Default values
+• Updated_at triggers
+• Discord user profile support
+• Event status enum
+• Storage bucket creation
+• Row Level Security
+• Policies
+• Helper functions if necessary
+
+Do NOT mix SQL with React code.
+
+The SQL must be immediately usable by pasting it into the Supabase SQL Editor.
+
+After the SQL block, explain in a few sentences how to execute it in Supabase.
