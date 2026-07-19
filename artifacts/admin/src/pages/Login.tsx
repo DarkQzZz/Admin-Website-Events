@@ -5,20 +5,21 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { supabase } from '@/lib/supabase'
 import { useLocation } from 'wouter'
-import { Palette, Loader2 } from 'lucide-react'
+import { Palette, Loader2, ArrowLeft } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false)
+  const [showEmail, setShowEmail] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [, setLocation] = useLocation()
   const { toast } = useToast()
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleDiscordLogin = async () => {
     setLoading(true)
-    
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'discord',
         options: {
           redirectTo: window.location.origin + import.meta.env.BASE_URL
@@ -27,17 +28,42 @@ export default function LoginPage() {
       if (error) throw error
     } catch (err: any) {
       toast({
-        title: "Authentication failed",
+        title: 'Authentication failed',
         description: err.message,
-        variant: "destructive"
+        variant: 'destructive'
       })
       setLoading(false)
     }
   }
 
-  // Developer fallback for mock
-  const bypassLogin = () => {
-    setLocation('/')
+  const handleEmailLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) throw error
+
+      // Verify the signed-in user is actually in the admins table
+      const { data: adminRow } = await supabase
+        .from('admins')
+        .select('id')
+        .eq('user_id', data.user.id)
+        .single()
+
+      if (!adminRow) {
+        await supabase.auth.signOut()
+        throw new Error('This account does not have admin access.')
+      }
+
+      setLocation('/')
+    } catch (err: any) {
+      toast({
+        title: 'Sign in failed',
+        description: err.message,
+        variant: 'destructive'
+      })
+      setLoading(false)
+    }
   }
 
   return (
@@ -51,25 +77,77 @@ export default function LoginPage() {
           <div className="h-16 w-16 bg-primary rounded-2xl flex items-center justify-center mb-6 shadow-lg shadow-primary/30">
             <Palette className="h-8 w-8 text-primary-foreground" />
           </div>
-          
+
           <h1 className="text-2xl font-bold tracking-tight mb-2">Welcome to Artopia</h1>
           <p className="text-muted-foreground mb-8 text-sm">
             Sign in to access the command center.
           </p>
 
-          <Button 
-            className="w-full h-12 text-md mb-4 bg-[#5865F2] hover:bg-[#4752C4] text-white" 
-            onClick={handleLogin}
-            disabled={loading}
-          >
-            {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
-            Sign in with Discord
-          </Button>
+          {!showEmail ? (
+            <>
+              <Button
+                className="w-full h-12 text-md mb-4 bg-[#5865F2] hover:bg-[#4752C4] text-white"
+                onClick={handleDiscordLogin}
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
+                Sign in with Discord
+              </Button>
 
-          {import.meta.env.DEV && (
-            <Button variant="ghost" className="w-full text-xs text-muted-foreground" onClick={bypassLogin}>
-              Bypass (Dev Only)
-            </Button>
+              <Button
+                variant="ghost"
+                className="w-full text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => setShowEmail(true)}
+              >
+                Use email instead
+              </Button>
+            </>
+          ) : (
+            <form onSubmit={handleEmailLogin} className="w-full space-y-4 text-left">
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="admin@example.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full h-11 mt-2"
+                disabled={loading}
+              >
+                {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                Sign in
+              </Button>
+
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full text-sm text-muted-foreground hover:text-foreground"
+                onClick={() => { setShowEmail(false); setEmail(''); setPassword('') }}
+              >
+                <ArrowLeft className="h-3.5 w-3.5 mr-1.5" />
+                Back to Discord sign in
+              </Button>
+            </form>
           )}
         </CardContent>
       </Card>
