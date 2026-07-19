@@ -10,6 +10,8 @@ import { formatDistanceToNow } from 'date-fns'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useToast } from '@/hooks/use-toast'
 
+const MotionTableRow = motion(TableRow)
+
 export default function VotingPage() {
   const { data: events, isLoading: eventsLoading } = useEvents()
   
@@ -81,7 +83,7 @@ export default function VotingPage() {
                 ) : (
                   <AnimatePresence>
                     {leaderboard?.map((entry, i) => (
-                      <TableRow as={motion.tr} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.05 }} key={entry.id}>
+                      <MotionTableRow initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.05 }} key={entry.id}>
                         <TableCell className="text-center font-bold">
                           {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
                         </TableCell>
@@ -98,7 +100,7 @@ export default function VotingPage() {
                         <TableCell className="text-right text-xs text-muted-foreground">
                           {entry.first_votes} / {entry.second_votes} / {entry.third_votes}
                         </TableCell>
-                      </TableRow>
+                      </MotionTableRow>
                     ))}
                   </AnimatePresence>
                 )}

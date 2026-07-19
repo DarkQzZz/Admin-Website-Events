@@ -11,6 +11,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/hooks/use-toast'
 import { motion, AnimatePresence } from 'framer-motion'
+
+const MotionTableRow = motion(TableRow)
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 
 export default function SubmissionsPage() {
@@ -133,7 +135,7 @@ function SubmissionRow({ sub, index }: { sub: any, index: number }) {
 
   return (
     <>
-      <TableRow as={motion.tr} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className="group">
+      <MotionTableRow initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className="group">
         <TableCell>
           <button 
             onClick={() => setViewImage(true)}
@@ -178,7 +180,7 @@ function SubmissionRow({ sub, index }: { sub: any, index: number }) {
             </Button>
           </div>
         </TableCell>
-      </TableRow>
+      </MotionTableRow>
 
       <Dialog open={viewImage} onOpenChange={setViewImage}>
         <DialogContent className="sm:max-w-[800px] p-0 overflow-hidden bg-black/95 border-none">

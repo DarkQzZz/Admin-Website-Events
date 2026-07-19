@@ -12,6 +12,8 @@ import { useToast } from '@/hooks/use-toast'
 import { Input } from '@/components/ui/input'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const MotionTableRow = motion(TableRow)
+
 export default function UsersPage() {
   const { data: users, isLoading } = useUsers()
   const [search, setSearch] = useState('')
@@ -103,7 +105,7 @@ function UserRow({ user, index }: { user: any, index: number }) {
   }
 
   return (
-    <TableRow as={motion.tr} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }}>
+    <MotionTableRow initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }}>
       <TableCell>
         <div className="flex items-center gap-3">
           <Avatar className="h-9 w-9">
@@ -148,6 +150,6 @@ function UserRow({ user, index }: { user: any, index: number }) {
           {user.is_banned ? 'Unban' : 'Ban'}
         </Button>
       </TableCell>
-    </TableRow>
+    </MotionTableRow>
   )
 }

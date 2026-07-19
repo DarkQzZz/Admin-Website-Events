@@ -16,6 +16,8 @@ import { Textarea } from '@/components/ui/textarea'
 import { useToast } from '@/hooks/use-toast'
 import { motion, AnimatePresence } from 'framer-motion'
 
+const MotionTableRow = motion(TableRow)
+
 const statusMap: Record<string, { label: string, variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
   'draft': { label: 'Draft', variant: 'outline' },
   'submission_open': { label: 'Submissions Open', variant: 'default' },
@@ -130,7 +132,7 @@ function EventRow({ event, index, onEdit }: { event: any, index: number, onEdit:
 
   return (
     <>
-      <TableRow as={motion.tr} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="group">
+      <MotionTableRow initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.05 }} className="group">
         <TableCell>
           <div className="flex flex-col">
             <span className="font-medium">{event.title}</span>
@@ -176,7 +178,7 @@ function EventRow({ event, index, onEdit }: { event: any, index: number, onEdit:
             </DropdownMenuContent>
           </DropdownMenu>
         </TableCell>
-      </TableRow>
+      </MotionTableRow>
 
       <Dialog open={!!confirmStatus} onOpenChange={(v) => !v && setConfirmStatus(null)}>
         <DialogContent>
